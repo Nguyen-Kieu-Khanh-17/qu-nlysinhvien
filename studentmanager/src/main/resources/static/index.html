@@ -273,9 +273,9 @@
             <div class="card">
                 <h3 id="formTitle">Thêm Mới Sinh viên</h3>
                 
-                <div class="form-group">
+                <div class="form-group" id="idGroup" style="display: none;">
                     <label for="studentId">Mã Sinh Viên (IDSV)</label>
-                    <input type="number" id="studentId" class="form-control" placeholder="Nhập mã sinh viên...">
+                    <input type="number" id="studentId" class="form-control" readonly style="background-color: #f3f4f6;">
                 </div>
                 
                 <div class="form-group">
@@ -307,8 +307,8 @@
             <!-- Data Section -->
             <div class="card">
                 <div class="search-bar">
+                    <button class="btn btn-primary" onclick="clearForm()" style="background-color: #4F46E5;">+ Thêm Mới</button>
                     <input type="text" id="keyword" class="form-control" placeholder="Nhập tên sinh viên cần tìm..." onkeyup="if(event.key === 'Enter') searchStudent()">
-                    <button class="btn btn-primary" onclick="searchStudent()">Tìm kiếm</button>
                     <button class="btn btn-secondary" onclick="loadStudents()">Tải lại</button>
                     <button class="btn btn-danger" onclick="window.open('/api/students/export/pdf', '_blank')">Xuất PDF</button>
                     <button class="btn btn-warning" style="background-color: #10B981; color: white; border: none;" onclick="window.open('/api/students/export/excel', '_blank')" onmouseover="this.style.backgroundColor='#059669'" onmouseout="this.style.backgroundColor='#10B981'">Xuất Excel</button>
@@ -491,8 +491,7 @@
                 const s = await res.json();
                 
                 document.getElementById("studentId").value = s.id;
-                document.getElementById("studentId").readOnly = true; // Prevent changing ID when editing
-                document.getElementById("studentId").style.backgroundColor = "#e9ecef";
+                document.getElementById("idGroup").style.display = "block";
                 
                 document.getElementById("name").value = s.name;
                 document.getElementById("age").value = s.age;
@@ -500,7 +499,7 @@
                 
                 isEditing = true;
                 document.getElementById("formTitle").innerText = "Cập nhật Sinh viên";
-                document.getElementById("btnSave").innerText = "Cập nhật";
+                document.getElementById("btnSave").innerText = "Cập nhật & Lưu";
                 document.getElementById("btnSave").classList.remove("btn-primary");
                 document.getElementById("btnSave").classList.add("btn-warning");
                 
@@ -514,8 +513,7 @@
         // Reset form
         function clearForm() {
             document.getElementById("studentId").value = "";
-            document.getElementById("studentId").readOnly = false;
-            document.getElementById("studentId").style.backgroundColor = "";
+            document.getElementById("idGroup").style.display = "none";
             
             document.getElementById("name").value = "";
             document.getElementById("age").value = "";
@@ -527,6 +525,8 @@
             document.getElementById("btnSave").innerText = "Lưu Sinh Viên";
             document.getElementById("btnSave").classList.remove("btn-warning");
             document.getElementById("btnSave").classList.add("btn-primary");
+            
+            document.getElementById("name").focus();
         }
 
         // Initialize
