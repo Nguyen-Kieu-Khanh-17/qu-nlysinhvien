@@ -18,22 +18,22 @@ public class DataLoader implements CommandLineRunner {
         studentRepository.deleteAll();
 
         Student s1 = new Student();
-        s1.setName("Nguy\u1EC5n V\u0103n A");
+        s1.setName("Nguyễn Nhật Nam");
         s1.setAge(20);
-        s1.setEmail("nguyenvana@example.com");
-        s1.setAvatar("https://i.pravatar.cc/150?u=1");
+        s1.setEmail("nhatnam@gmail.com");
+        s1.setAvatar("https://i.pravatar.cc/150?u=nam");
 
         Student s2 = new Student();
-        s2.setName("Tr\u1EA7n Th\u1ECB B");
+        s2.setName("Lê Thu Hà");
         s2.setAge(21);
-        s2.setEmail("tranthib@example.com");
-        s2.setAvatar("https://i.pravatar.cc/150?u=2");
+        s2.setEmail("thuha@gmail.com");
+        s2.setAvatar("https://i.pravatar.cc/150?u=ha");
 
         Student s3 = new Student();
-        s3.setName("L\u00EA V\u0103n C");
+        s3.setName("Trần Minh Quân");
         s3.setAge(22);
-        s3.setEmail("levanc@example.com");
-        s3.setAvatar("https://i.pravatar.cc/150?u=3");
+        s3.setEmail("minhquan@gmail.com");
+        s3.setAvatar("https://i.pravatar.cc/150?u=quan");
 
         studentRepository.save(s1);
         studentRepository.save(s2);
