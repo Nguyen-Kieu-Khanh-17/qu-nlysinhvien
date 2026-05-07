@@ -3,17 +3,23 @@ package com.example.studentmanager.Entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 
 @Entity
 @Table(name = "students")
 public class Student {
     @Id
-    // XÓA BỎ DÒNG @GeneratedValue nếu có
+    @jakarta.persistence.GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     private int id; 
     
+    @Column(columnDefinition = "NVARCHAR(255)")
     private String name;
     private int age;
+    @Column(columnDefinition = "NVARCHAR(255)")
     private String email;
+
+    @Column(columnDefinition = "NVARCHAR(255)")
+    private String avatar;
 
 // Phải có constructor rỗng
 public Student() {}
@@ -27,4 +33,6 @@ public Student() {}
     public void setAge(int age) { this.age = age; }
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
+    public String getAvatar() { return avatar; }
+    public void setAvatar(String avatar) { this.avatar = avatar; }
 }

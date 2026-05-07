@@ -17,4 +17,18 @@ public class StudentService {
     public Student save(Student s) { return repository.save(s); }
     public void delete(int id) { repository.deleteById(id); }
     public List<Student> search(String keyword) { return repository.findByNameContainingIgnoreCase(keyword); }
+
+    public java.util.Map<String, Object> getStats() {
+        List<Student> students = repository.findAll();
+        long totalCount = students.size();
+        double averageAge = students.stream()
+                .mapToInt(Student::getAge)
+                .average()
+                .orElse(0.0);
+
+        java.util.Map<String, Object> stats = new java.util.HashMap<>();
+        stats.put("totalCount", totalCount);
+        stats.put("averageAge", Math.round(averageAge * 10.0) / 10.0);
+        return stats;
+    }
 }
