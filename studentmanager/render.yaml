@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: quan-ly-sinh-vien
+    runtime: docker
+    plan: free
+    region: singapore
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: JAVA_TOOL_OPTIONS
+        value: -Dfile.encoding=UTF-8

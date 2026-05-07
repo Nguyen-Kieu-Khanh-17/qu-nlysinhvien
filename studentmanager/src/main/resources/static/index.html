@@ -284,8 +284,8 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="age">Tuổi</label>
-                    <input type="number" id="age" class="form-control" placeholder="Nhập tuổi...">
+                    <label for="age">Tuổi (1 - 100)</label>
+                    <input type="number" id="age" class="form-control" placeholder="Nhập tuổi..." min="1" max="100">
                 </div>
                 
                 <div class="form-group">
@@ -299,19 +299,20 @@
                 </div>
                 
                 <div class="btn-group">
-                    <button class="btn btn-primary" onclick="saveStudent()" id="btnSave">Lưu Sinh Viên</button>
-                    <button class="btn btn-secondary" onclick="clearForm()">Hủy / Làm mới</button>
+                    <button type="button" class="btn btn-primary" onclick="saveStudent()" id="btnSave">Lưu Sinh Viên</button>
+                    <button type="button" class="btn btn-secondary" onclick="clearForm()">Hủy / Làm mới</button>
                 </div>
             </div>
 
             <!-- Data Section -->
             <div class="card">
                 <div class="search-bar">
-                    <button class="btn btn-primary" onclick="clearForm()" style="background-color: #4F46E5;">+ Thêm Mới</button>
+                    <button type="button" class="btn btn-primary" onclick="clearForm()" style="background-color: #4F46E5;">+ Thêm Mới</button>
                     <input type="text" id="keyword" class="form-control" placeholder="Nhập tên sinh viên cần tìm..." onkeyup="if(event.key === 'Enter') searchStudent()">
-                    <button class="btn btn-secondary" onclick="loadStudents()">Tải lại</button>
-                    <button class="btn btn-danger" onclick="window.open('/api/students/export/pdf', '_blank')">Xuất PDF</button>
-                    <button class="btn btn-warning" style="background-color: #10B981; color: white; border: none;" onclick="window.open('/api/students/export/excel', '_blank')" onmouseover="this.style.backgroundColor='#059669'" onmouseout="this.style.backgroundColor='#10B981'">Xuất Excel</button>
+                    <button type="button" class="btn btn-secondary" onclick="loadStudents()">Tải lại</button>
+                    <button type="button" class="btn btn-danger" onclick="deleteAllStudents()" style="background-color: #991B1B;">Xóa tất cả</button>
+                    <button type="button" class="btn btn-danger" onclick="window.open('/api/students/export/pdf', '_blank')">Xuất PDF</button>
+                    <button type="button" class="btn btn-warning" style="background-color: #10B981; color: white; border: none;" onclick="window.open('/api/students/export/excel', '_blank')" onmouseover="this.style.backgroundColor='#059669'" onmouseout="this.style.backgroundColor='#10B981'">Xuất Excel</button>
                 </div>
 
                 <div class="table-container">
@@ -480,6 +481,21 @@
                     }
                 } catch (error) {
                     console.error("Error deleting student:", error);
+                }
+            }
+        }
+
+        async function deleteAllStudents() {
+            if(confirm("BẠN CÓ CHẮC CHẮN MUỐN XÓA TOÀN BỘ DANH SÁCH SINH VIÊN? Hành động này không thể hoàn tác!")) {
+                try {
+                    const res = await fetch(`${API_URL}/delete-all`, { method: 'POST' });
+                    if (res.ok) {
+                        loadStudents();
+                    } else {
+                        alert("Xóa tất cả thất bại!");
+                    }
+                } catch (error) {
+                    console.error("Error deleting all students:", error);
                 }
             }
         }

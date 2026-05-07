@@ -16,6 +16,7 @@ public class StudentService {
     public Student getById(int id) { return repository.findById(id).orElse(null); }
     public Student save(Student s) { return repository.save(s); }
     public void delete(int id) { repository.deleteById(id); }
+    public void deleteAll() { repository.deleteAll(); }
     public List<Student> search(String keyword) { return repository.findByNameContainingIgnoreCase(keyword); }
 
     public java.util.Map<String, Object> getStats() {

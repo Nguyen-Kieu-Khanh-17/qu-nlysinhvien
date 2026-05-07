@@ -116,4 +116,9 @@ public class StudentApiController {
     public java.util.Map<String, Object> getStats() {
         return service.getStats();
     }
+
+    @PostMapping("/delete-all")
+    public void deleteAll() {
+        service.deleteAll();
+    }
 }

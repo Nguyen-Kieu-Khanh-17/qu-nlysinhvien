@@ -33,12 +33,12 @@ public class ExportService {
         PdfWriter.getInstance(document, out);
 
         document.open();
-        // Use a default font that supports Unicode if possible, but basic FontFactory supports ASCII.
-        // For robust Vietnamese, a TTF font should be loaded. Here we use Helvetica as a fallback.
-        Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
-        fontTitle.setSize(18);
+        
+        Font fontTitle = getVietnameseFont(18, true, Color.BLUE);
+        Font fontHeader = getVietnameseFont(12, true, Color.WHITE);
+        Font fontData = getVietnameseFont(11, false, Color.BLACK);
 
-        Paragraph title = new Paragraph("List of Students", fontTitle);
+        Paragraph title = new Paragraph("DANH SÁCH SINH VIÊN", fontTitle);
         title.setAlignment(Paragraph.ALIGN_CENTER);
         document.add(title);
         
@@ -46,11 +46,11 @@ public class ExportService {
 
         PdfPTable table = new PdfPTable(5);
         table.setWidthPercentage(100f);
-        table.setWidths(new float[] {1.5f, 3.5f, 2.0f, 4.0f, 3.0f});
+        table.setWidths(new float[] {1.5f, 3.5f, 1.5f, 4.0f, 2.0f});
         table.setSpacingBefore(10);
 
-        writeTableHeader(table);
-        writeTableData(table, students);
+        writeTableHeader(table, fontHeader);
+        writeTableData(table, students, fontData);
 
         document.add(table);
         document.close();
@@ -58,39 +58,64 @@ public class ExportService {
         return out.toByteArray();
     }
 
-    private void writeTableHeader(PdfPTable table) {
+    private Font getVietnameseFont(float size, boolean isBold, Color color) {
+        try {
+            // Try common paths for Arial on Windows and Linux/Render
+            String[] fontPaths = {
+                "C:/Windows/Fonts/Arial.ttf",
+                "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
+                "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
+            };
+            
+            for (String path : fontPaths) {
+                try {
+                    com.lowagie.text.pdf.BaseFont bf = com.lowagie.text.pdf.BaseFont.createFont(path, com.lowagie.text.pdf.BaseFont.IDENTITY_H, com.lowagie.text.pdf.BaseFont.EMBEDDED);
+                    Font font = new Font(bf, size);
+                    if (isBold) font.setStyle(Font.BOLD);
+                    font.setColor(color);
+                    return font;
+                } catch (Exception ignored) {}
+            }
+        } catch (Exception e) {
+            System.err.println("Could not load Vietnamese font: " + e.getMessage());
+        }
+        
+        // Fallback to Helvetica
+        Font font = FontFactory.getFont(FontFactory.HELVETICA);
+        font.setSize(size);
+        if (isBold) font.setStyle(Font.BOLD);
+        font.setColor(color);
+        return font;
+    }
+
+    private void writeTableHeader(PdfPTable table, Font font) {
         PdfPCell cell = new PdfPCell();
         cell.setBackgroundColor(Color.BLUE);
         cell.setPadding(5);
 
-        Font font = FontFactory.getFont(FontFactory.HELVETICA);
-        font.setColor(Color.WHITE);
-
-        cell.setPhrase(new Phrase("Student ID", font));
+        cell.setPhrase(new Phrase("Mã SV", font));
         table.addCell(cell);
         
-        cell.setPhrase(new Phrase("Name", font));
+        cell.setPhrase(new Phrase("Họ và Tên", font));
         table.addCell(cell);
         
-        cell.setPhrase(new Phrase("Age", font));
+        cell.setPhrase(new Phrase("Tuổi", font));
         table.addCell(cell);
         
         cell.setPhrase(new Phrase("Email", font));
         table.addCell(cell);
 
-        cell.setPhrase(new Phrase("Avatar URL", font));
+        cell.setPhrase(new Phrase("Ảnh", font));
         table.addCell(cell);
     }
 
-    private void writeTableData(PdfPTable table, List<Student> students) {
-        Font font = FontFactory.getFont(FontFactory.HELVETICA);
+    private void writeTableData(PdfPTable table, List<Student> students, Font font) {
         for (Student student : students) {
             table.addCell(new Phrase(String.valueOf(student.getId()), font));
-            // Unicode characters might not render properly with Helvetica, but we try our best
             table.addCell(new Phrase(student.getName(), font));
             table.addCell(new Phrase(String.valueOf(student.getAge()), font));
             table.addCell(new Phrase(student.getEmail(), font));
-            table.addCell(new Phrase(student.getAvatar() != null ? "Yes" : "No", font));
+            table.addCell(new Phrase(student.getAvatar() != null ? "Có" : "Không", font));
         }
     }
 
