@@ -1,32 +1,25 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Danh sách sinh viên</title>
     <style>
-        table { border-collapse: collapse; width: 70%; }
-        th, td { border: 1px solid black; padding: 8px; }
+        body {
+            font-family: Arial, sans-serif;
+            padding: 24px;
+        }
+        
+        a {
+            color: #4F46E5;
+            font-weight: 600;
+        }
     </style>
 </head>
+
 <body>
-
-<h2>DANH SÁCH SINH VIÊN</h2>
-
-<table>
-    <tr>
-        <th>ID</th>
-        <th>Họ tên</th>
-        <th>Tuổi</th>
-        <th>Email</th>
-    </tr>
-
-    <tr th:each="sv : ${students}">
-        <td th:text="${sv.id}"></td>
-        <td th:text="${sv.name}"></td>
-        <td th:text="${sv.age}"></td>
-        <td th:text="${sv.email}"></td>
-    </tr>
-</table>
+    <h2>Danh sách sinh viên</h2>
+    <p>Trang này đã được thay bằng giao diện mới tại: <a href="/student-manager">/student-manager</a></p>
 </body>
-</html>
 
+</html>

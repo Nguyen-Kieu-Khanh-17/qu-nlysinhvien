@@ -117,8 +117,42 @@ public class StudentApiController {
         return service.getStats();
     }
 
+    @GetMapping("/stats/advanced")
+    public java.util.Map<String, Long> getAdvancedStats() {
+        return service.getAdvancedStats();
+    }
+
     @PostMapping("/delete-all")
     public void deleteAll() {
         service.deleteAll();
+    }
+
+    // RESTful DELETE All
+    @DeleteMapping
+    public void deleteAllRest() {
+        service.deleteAll();
+    }
+
+    // RESTful DELETE By ID
+    @DeleteMapping("/{id}")
+    public String deleteRest(@PathVariable int id) {
+        service.delete(id);
+        return "Xóa thành công sinh viên ID: " + id;
+    }
+
+    // RESTful PUT Update
+    @PutMapping("/{id}")
+    public Student updateRest(@PathVariable int id, @ModelAttribute Student student, @RequestParam(value = "avatarFile", required = false) org.springframework.web.multipart.MultipartFile avatarFile) {
+        return update(id, student, avatarFile);
+    }
+
+    // API Kiểm tra trùng lặp email
+    @GetMapping("/check-email")
+    public boolean checkEmail(@RequestParam String email, @RequestParam(required = false) Integer excludeId) {
+        if (excludeId != null) {
+            return service.existsByEmailAndIdNot(email, excludeId);
+        } else {
+            return service.existsByEmail(email);
+        }
     }
 }

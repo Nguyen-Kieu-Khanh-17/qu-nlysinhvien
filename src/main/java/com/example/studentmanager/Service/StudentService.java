@@ -32,4 +32,27 @@ public class StudentService {
         stats.put("averageAge", Math.round(averageAge * 10.0) / 10.0);
         return stats;
     }
+
+    public boolean existsByEmail(String email) {
+        return repository.existsByEmail(email);
+    }
+
+    public boolean existsByEmailAndIdNot(String email, int id) {
+        return repository.existsByEmailAndIdNot(email, id);
+    }
+
+    public java.util.Map<String, Long> getAdvancedStats() {
+        List<Student> students = repository.findAll();
+        long under18 = students.stream().filter(s -> s.getAge() < 18).count();
+        long from18To22 = students.stream().filter(s -> s.getAge() >= 18 && s.getAge() <= 22).count();
+        long from23To30 = students.stream().filter(s -> s.getAge() >= 23 && s.getAge() <= 30).count();
+        long over30 = students.stream().filter(s -> s.getAge() > 30).count();
+
+        java.util.Map<String, Long> advStats = new java.util.HashMap<>();
+        advStats.put("under18", under18);
+        advStats.put("from18To22", from18To22);
+        advStats.put("from23To30", from23To30);
+        advStats.put("over30", over30);
+        return advStats;
+    }
 }

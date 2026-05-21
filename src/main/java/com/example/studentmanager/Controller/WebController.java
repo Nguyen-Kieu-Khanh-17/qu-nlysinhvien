@@ -14,7 +14,9 @@ public class WebController {
 
     @GetMapping("/student-manager")
     public String studentManager(Model model) {
-        model.addAttribute("students", studentService.getAll());
-        return "students"; // refers to src/main/resources/templates/students.html
+        // Giao diện mới chạy theo kiểu frontend -> gọi trực tiếp REST API.
+        // Không cần nhúng dữ liệu students vào Thymeleaf.
+        return "index"; // src/main/resources/templates/index.html
     }
+
 }

@@ -10,4 +10,8 @@ import java.util.List;
 public interface StudentRepository extends JpaRepository<Student, Integer> {
     // Thêm hàm tìm kiếm theo tên (Yêu cầu 3)
     List<Student> findByNameContainingIgnoreCase(String name);
+
+    // Kiểm tra trùng Email
+    boolean existsByEmail(String email);
+    boolean existsByEmailAndIdNot(String email, Integer id);
 }
